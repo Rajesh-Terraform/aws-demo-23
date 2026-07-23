@@ -1,4 +1,4 @@
-name: AWS OIDC
+name: AWS OIDC Demo
 
 on:
   push:
@@ -14,13 +14,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::647132523867:role/github-actions-test-role
+          role-to-assume: arn:aws:iam::647132523867:role/github-actions-role
           aws-region: us-east-1
 
-      - name: Verify Identity
+      - name: Verify AWS Identity
         run: aws sts get-caller-identity
+
+      - name: List S3 Buckets
+        run: aws s3 ls
