@@ -45,6 +45,10 @@ jobs:
 
       - name: List files
         run: ls -al
+      - name: checking directory
+        run: |
+          cd .github/workflows
+          ls -al
 
       # Validate Terraform
       - name: Terraform Validate
