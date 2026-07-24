@@ -36,13 +36,7 @@ jobs:
       - name: Write AWS shared credentials profile (hub)
         run: |
           mkdir -p ~/.aws
-          cat > ~/.aws/credentials <<EOF
-[hub]
-aws_access_key_id = $AWS_ACCESS_KEY_ID
-aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
-aws_session_token = $AWS_SESSION_TOKEN
-region = ap-south-1
-EOF
+          printf "[hub]\naws_access_key_id = %s\naws_secret_access_key = %s\naws_session_token = %s\nregion = ap-south-1\n" \"$AWS_ACCESS_KEY_ID\" \"$AWS_SECRET_ACCESS_KEY\" \"$AWS_SESSION_TOKEN\" > ~/.aws/credentials
 
       # Install Terraform
       - name: Setup Terraform
