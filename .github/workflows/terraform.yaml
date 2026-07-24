@@ -12,6 +12,9 @@ permissions:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/environments/hub-account
 
     steps:
       # Checkout Repository
@@ -45,14 +48,17 @@ jobs:
 
       - name: List files
         run: ls -al
-      - name: checking directory
-        run: |
-          cd .github/workflows
-          ls -al
+      
 
       # Validate Terraform
       - name: Terraform Validate
         run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+ 
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve tfplan
 
       # Create Execution Plan
       - name: Terraform apply
