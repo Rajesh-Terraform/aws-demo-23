@@ -8,11 +8,11 @@ terraform {
   }
 
   # backend "s3" {
-  #   bucket         = "your-tfstate-bucket"
-  #   key            = "spoke-account/network.tfstate"
-  #   region         = "us-east-1"
-  #   dynamodb_table = "tf-locks"
-  # }
+  backend "s3" {
+    bucket = "dhoni-demo-terraform-bucket-123456"
+    key    = "spoke-account/network.tfstate"
+    region = "ap-south-1"
+  }
 }
 
 provider "aws" {
