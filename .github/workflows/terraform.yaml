@@ -1,7 +1,7 @@
 name: Terraform
 
 on:
-  push:
+ push:
     branches:
       - main
 
@@ -14,29 +14,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      # Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # Configure AWS Credentials (OIDC)
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::647132523867:role/github-actions-terraform-role-v1
           aws-region: ap-south-1
 
+      # Verify AWS Login
       - name: Verify AWS Login
         run: aws sts get-caller-identity
 
+      # Install Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      # Check Terraform Version
       - name: Terraform Version
         run: terraform version
 
+      # Initialize Terraform
       - name: Terraform Init
         run: terraform init
 
+      # Validate Terraform
       - name: Terraform Validate
         run: terraform validate
 
+      # Create Execution Plan
       - name: Terraform Plan
         run: terraform plan
-
-       
-
