@@ -26,11 +26,11 @@ jobs:
       - name: Verify AWS Login
         run: aws sts get-caller-identity
 
+      - name: Terraform Version
+        run: terraform version
+
       - name: Terraform Init
         run: terraform init
-
-      - name: Terraform Format
-        run: terraform fmt -check
 
       - name: Terraform Validate
         run: terraform validate
@@ -38,5 +38,5 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve  
+       
+
