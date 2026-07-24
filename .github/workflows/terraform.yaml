@@ -1,7 +1,7 @@
 name: Terraform
 
 on:
- push:
+  push:
     branches:
       - main
 
@@ -31,6 +31,18 @@ jobs:
       # Verify AWS Login
       - name: Verify AWS Login
         run: aws sts get-caller-identity
+
+      # Create shared credentials profile 'hub' for Terraform provider
+      - name: Write AWS shared credentials profile (hub)
+        run: |
+          mkdir -p ~/.aws
+          cat > ~/.aws/credentials <<EOF
+[hub]
+aws_access_key_id = $AWS_ACCESS_KEY_ID
+aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
+aws_session_token = $AWS_SESSION_TOKEN
+region = ap-south-1
+EOF
 
       # Install Terraform
       - name: Setup Terraform
