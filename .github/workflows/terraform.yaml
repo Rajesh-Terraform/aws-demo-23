@@ -43,6 +43,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: List files
+        run: ls -al
+
       # Validate Terraform
       - name: Terraform Validate
         run: terraform validate
