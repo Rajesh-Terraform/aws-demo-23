@@ -6,10 +6,8 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      action:
-        description: 'Operation to run (plan|apply|destroy)'
-        required: true
-        default: 'plan'
+     
+        
       env:
         description: 'Environment directory (hub-account or spoke-account)'
         required: true
@@ -18,10 +16,7 @@ on:
         description: 'AWS CLI profile name to write into credentials'
         required: true
         default: 'hub'
-      auto_approve:
-        description: 'Auto approve for destroy (true/false)'
-        required: false
-        default: 'true'
+      
 
 concurrency:
   group: terraform-${{ github.ref }}
