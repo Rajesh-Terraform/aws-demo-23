@@ -9,7 +9,7 @@ terraform {
 
   # backend "s3" {
   backend "s3" {
-    bucket = "dhoni-demo-terraform-bucket-123456"
+    bucket = "gaddam-demo-terraform-bucket-123456"
     key    = "spoke-account/network.tfstate"
     region = "ap-south-1"
   }

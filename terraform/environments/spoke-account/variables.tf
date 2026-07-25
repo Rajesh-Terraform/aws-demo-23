@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "us-east-1"
+  default = "ap-south-1"
 }
 
 variable "aws_profile" {
@@ -21,10 +21,6 @@ variable "vpc_cidr" {
 
 variable "azs" {
   type    = list(string)
-  default = ["us-east-1a", "us-east-1b"]
+  default = ["ap-south-1a", "ap-south-1b"]
 }
 
-variable "private_subnet_cidrs" {
-  type    = list(string)
-  default = ["10.1.0.0/24", "10.1.1.0/24"]
-}
