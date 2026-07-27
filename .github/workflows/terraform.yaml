@@ -1,4 +1,4 @@
-name: Terraform
+name: AWS OIDC Demo
 
 on:
   push:
@@ -10,63 +10,21 @@ permissions:
   contents: read
 
 jobs:
-  terraform:
+  list-s3:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: terraform/environments/hub-account
 
     steps:
-      # Checkout Repository
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Configure AWS Credentials (OIDC)
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::647132523867:role/github-actions-terraform-role-v1
+          role-to-assume: arn:aws:iam::434097521299:role/testingdummy
           aws-region: ap-south-1
 
-      # Verify AWS Login
-      - name: Verify AWS Login
+      - name: Verify Identity
         run: aws sts get-caller-identity
 
-      # Create shared credentials profile 'hub' for Terraform provider
-      - name: Write AWS shared credentials profile (hub)
-        run: |
-          mkdir -p ~/.aws
-          printf "[hub]\naws_access_key_id = %s\naws_secret_access_key = %s\naws_session_token = %s\nregion = ap-south-1\n" \"$AWS_ACCESS_KEY_ID\" \"$AWS_SECRET_ACCESS_KEY\" \"$AWS_SESSION_TOKEN\" > ~/.aws/credentials
-
-      # Install Terraform
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.8
-
-      # Check Terraform Version
-      - name: Terraform Version
-        run: terraform version
-
-      # Initialize Terraform
-      - name: Terraform Init
-        run: terraform init
-
-      - name: List files
-        run: ls -al
-      
-
-      # Validate Terraform
-      - name: Terraform Validate
-        run: terraform validate
-
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
- 
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve tfplan
-
-      - name: Terraform destroy
-        run: terraform destroy -auto-approve
-
-      
+      - name: List S3 Buckets
+        run: aws s3 ls 
