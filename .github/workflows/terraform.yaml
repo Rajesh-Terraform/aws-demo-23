@@ -20,7 +20,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::434097521299:role/testingdummy
+          role-to-assume: ${{ secrets.TERRAFORM }}
           aws-region: ap-south-1
 
       - name: Verify Identity
