@@ -3,15 +3,40 @@ name: Terraform Hub VPC
 on:
   push:
     branches:
+<<<<<<< HEAD
       - master
+=======
+      - main
+  workflow_dispatch:
+    inputs:
+     
+        
+      env:
+        description: 'Environment directory (hub-account or spoke-account)'
+        required: true
+        default: 'hub-account'
+      profile:
+        description: 'AWS CLI profile name to write into credentials'
+        required: true
+        default: 'hub'
+      
+
+concurrency:
+  group: terraform-${{ github.ref }}
+  cancel-in-progress: true
+>>>>>>> fd20bb4b0d06787cd6b7dae9af42a68beef466fa
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
+<<<<<<< HEAD
   terraform:
 
+=======
+  hub-account:
+>>>>>>> fd20bb4b0d06787cd6b7dae9af42a68beef466fa
     runs-on: ubuntu-latest
 
     defaults:
@@ -51,7 +76,56 @@ jobs:
       - name: Terraform Plan
         working-directory: .github/workflows/terraform
         run: terraform plan -out=tfplan
+<<<<<<< HEAD
 
       - name: Terraform Apply
         working-directory: .github/workflows/terraform
         run: terraform apply -auto-approve tfplan  
+=======
+
+     
+  spoke-account:
+    needs: hub-account
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/environments/spoke-account
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+ 
+      - name: Configure AWS Credentials (Spoke - 434097521299)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::434097521299:role/github-actions-terraform-role-v1
+          aws-region: ap-south-1
+ 
+      - name: Verify AWS Login
+        run: aws sts get-caller-identity
+
+      - name: Write AWS shared credentials profile (spoke)
+        run: |
+          mkdir -p ~/.aws
+          printf "[spoke]\naws_access_key_id = %s\naws_secret_access_key = %s\naws_session_token = %s\nregion = ap-south-1\n" \"$AWS_ACCESS_KEY_ID\" \"$AWS_SECRET_ACCESS_KEY\" \"$AWS_SESSION_TOKEN\" > ~/.aws/credentials
+
+ 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+ 
+      - name: Terraform Init
+        run: terraform init
+ 
+      - name: Terraform Validate
+        run: terraform validate
+ 
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+ 
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+      
+
+  
+>>>>>>> fd20bb4b0d06787cd6b7dae9af42a68beef466fa
